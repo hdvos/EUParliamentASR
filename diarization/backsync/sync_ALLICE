@@ -1,0 +1,2 @@
+rsync -vraz --bwlimit=2500 --exclude 'backsync' ./* hpc1:/data/voshpde/pyannote
+rsync -vraz --bwlimit=2500 hpc1:/data/voshpde/pyannote/* backsync/

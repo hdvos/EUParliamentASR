@@ -1,0 +1,20 @@
+/cm/local/apps/slurm/var/spool/job82109/slurm_script: line 9: number: command not found
+Downloading: "https://github.com/pyannote/pyannote-audio/archive/master.zip" to /home/voshpde/.cache/torch/hub/master.zip
+Traceback (most recent call last):
+  File "test_pyannote_1.py", line 7, in <module>
+    pipeline = torch.hub.load('pyannote/pyannote-audio', 'dia')
+  File "/cm/shared/easybuild/GenuineIntel/software/PyTorch/1.6.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/torch/hub.py", line 349, in load
+    hub_module = import_module(MODULE_HUBCONF, repo_dir + '/' + MODULE_HUBCONF)
+  File "/cm/shared/easybuild/GenuineIntel/software/PyTorch/1.6.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/torch/hub.py", line 71, in import_module
+    spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 728, in exec_module
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "/home/voshpde/.cache/torch/hub/pyannote_pyannote-audio_master/hubconf.py", line 37, in <module>
+    from pyannote.audio.features import Pretrained as _Pretrained
+  File "/home/voshpde/.cache/torch/hub/pyannote_pyannote-audio_master/pyannote/audio/features/__init__.py", line 33, in <module>
+    from .base import FeatureExtraction
+  File "/home/voshpde/.cache/torch/hub/pyannote_pyannote-audio_master/pyannote/audio/features/base.py", line 32, in <module>
+    from .utils import RawAudio
+  File "/home/voshpde/.cache/torch/hub/pyannote_pyannote-audio_master/pyannote/audio/features/utils.py", line 36, in <module>
+    from pyannote.core import SlidingWindow, SlidingWindowFeature
+ModuleNotFoundError: No module named 'pyannote.core'

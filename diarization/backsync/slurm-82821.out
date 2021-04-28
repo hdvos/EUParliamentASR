@@ -1,0 +1,174 @@
+Collecting pyannote.core
+  Downloading https://files.pythonhosted.org/packages/ba/09/64e64cedccf764be513405d1ff3d3d2bbcbea60d18fb6a6d9e815aedcd79/pyannote.core-4.1-py3-none-any.whl (56kB)
+Requirement already satisfied: pandas>=0.17.1 in /cm/shared/easybuild/software/SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages (from pyannote.core) (0.25.3)
+Collecting simplejson>=3.8.1 (from pyannote.core)
+  Downloading https://files.pythonhosted.org/packages/a8/04/377418ac1e530ce2a196b54c6552c018fdf1fe776718053efb1f216bffcd/simplejson-3.17.2-cp37-cp37m-manylinux2010_x86_64.whl (128kB)
+Requirement already satisfied: typing-extensions>=3.7.4.1 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.core) (3.7.4.3)
+Requirement already satisfied: matplotlib>=2.0.0 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.core) (3.3.1)
+Requirement already satisfied: scipy>=1.1 in /cm/shared/easybuild/software/SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages (from pyannote.core) (1.3.1)
+Requirement already satisfied: numpy>=1.10.4 in /cm/shared/easybuild/software/SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages (from pyannote.core) (1.17.3)
+Collecting sortedcontainers>=2.0.4 (from pyannote.core)
+  Downloading https://files.pythonhosted.org/packages/20/4d/a7046ae1a1a4cc4e9bbed194c387086f06b25038be596543d026946330c9/sortedcontainers-2.3.0-py2.py3-none-any.whl
+Requirement already satisfied: pytz>=2017.2 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from pandas>=0.17.1->pyannote.core) (2019.2)
+Requirement already satisfied: python-dateutil>=2.6.1 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from pandas>=0.17.1->pyannote.core) (2.8.0)
+Requirement already satisfied: certifi>=2020.06.20 in /home/voshpde/.local/lib/python3.7/site-packages (from matplotlib>=2.0.0->pyannote.core) (2020.6.20)
+Requirement already satisfied: pillow>=6.2.0 in /cm/shared/easybuild/software/Pillow/6.2.1-GCCcore-8.3.0/lib/python3.7/site-packages (from matplotlib>=2.0.0->pyannote.core) (6.2.1)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.3 in /home/voshpde/.local/lib/python3.7/site-packages (from matplotlib>=2.0.0->pyannote.core) (2.4.7)
+Requirement already satisfied: kiwisolver>=1.0.1 in /home/voshpde/.local/lib/python3.7/site-packages (from matplotlib>=2.0.0->pyannote.core) (1.2.0)
+Requirement already satisfied: cycler>=0.10 in /home/voshpde/.local/lib/python3.7/site-packages (from matplotlib>=2.0.0->pyannote.core) (0.10.0)
+Requirement already satisfied: six>=1.5 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from python-dateutil>=2.6.1->pandas>=0.17.1->pyannote.core) (1.12.0)
+Installing collected packages: simplejson, sortedcontainers, pyannote.core
+Successfully installed pyannote.core-4.1 simplejson-3.17.2 sortedcontainers-2.3.0
+Collecting pyannote.audio==1.1.1
+  Downloading https://files.pythonhosted.org/packages/b8/9e/3539c9d74a477eba4051aadb2a686b99249358f9d8f513780acab2d2a54e/pyannote.audio-1.1.1-py3-none-any.whl (230kB)
+Collecting pyannote.pipeline<2.0.0,>=1.5.2 (from pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/f2/f7/781bf83a76d5e68ecfdebb9bfbfd20063dbdf8e578a15885a0156cfb228f/pyannote.pipeline-1.5.2-py3-none-any.whl
+Collecting tensorboard>=2.0.0 (from pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/64/21/eebd23060763fedeefb78bc2b286e00fa1d8abda6f70efa2ee08c28af0d4/tensorboard-2.4.1-py3-none-any.whl (10.6MB)
+Requirement already satisfied: soundfile>=0.10.2 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.audio==1.1.1) (0.10.3.post1)
+Requirement already satisfied: sortedcontainers>=2.0.4 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.audio==1.1.1) (2.3.0)
+Requirement already satisfied: pandas>=0.18.0 in /cm/shared/easybuild/software/SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages (from pyannote.audio==1.1.1) (0.25.3)
+Collecting pescador>=2.1.0 (from pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/75/64/df7b03e8bf0edbf2a07e4666f0b5879919009a73f54f0a828adfe122c0a8/pescador-2.1.0.tar.gz
+Collecting sortedcollections>=1.0.1 (from pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/6e/39/c993a7d0c9dbf3aeca5008bdd00e4436ad9b7170527cef0a14634b47001f/sortedcollections-2.1.0-py3-none-any.whl
+Requirement already satisfied: tqdm>=4.29.1 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.audio==1.1.1) (4.48.2)
+Requirement already satisfied: Pillow>=6.2.1 in /cm/shared/easybuild/software/Pillow/6.2.1-GCCcore-8.3.0/lib/python3.7/site-packages (from pyannote.audio==1.1.1) (6.2.1)
+Collecting pyannote.database>=4.0 (from pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/f8/cb/82d8035dbc3dc9aac80b5475fcac63125fc3669e4d8d07261ee3d8507f57/pyannote.database-4.1-py3-none-any.whl (41kB)
+Requirement already satisfied: typing-extensions>=3.7.4; python_version < "3.8" in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.audio==1.1.1) (3.7.4.3)
+Requirement already satisfied: pyYAML>=3.12 in /cm/shared/easybuild/software/PyYAML/5.1.2-GCCcore-8.3.0/lib/python3.7/site-packages (from pyannote.audio==1.1.1) (5.1.2)
+Requirement already satisfied: scikit-learn>=0.20.2 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.audio==1.1.1) (0.23.2)
+Requirement already satisfied: cachetools>=2.0.0 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.audio==1.1.1) (4.1.1)
+Collecting pyannote.metrics>=2.3 (from pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/76/44/39e79594474eb99a23b26cb0104d78f6f20e4f8de3a26d67f24d2ea9ef28/pyannote.metrics-3.0.1-py3-none-any.whl (49kB)
+Requirement already satisfied: librosa>=0.8.0 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.audio==1.1.1) (0.8.0)
+Requirement already satisfied: pyannote.core>=4.1 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.audio==1.1.1) (4.1)
+Requirement already satisfied: filelock>=3.0.10 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1) (3.0.12)
+Requirement already satisfied: docopt>=0.6.2 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1) (0.6.2)
+Collecting optuna>=1.4 (from pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/2b/21/d13081805e1e1afc71f5bb743ece324c8bd576237c51b899ecb38a717502/optuna-2.7.0-py3-none-any.whl (293kB)
+Requirement already satisfied: werkzeug>=0.11.15 in /home/voshpde/.local/lib/python3.7/site-packages (from tensorboard>=2.0.0->pyannote.audio==1.1.1) (1.0.1)
+Collecting google-auth-oauthlib<0.5,>=0.4.1 (from tensorboard>=2.0.0->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/9d/d3/7541e89f1fc456eef157224f597a8bba22589db6369a03eaba68c11f07a0/google_auth_oauthlib-0.4.4-py2.py3-none-any.whl
+Collecting markdown>=2.6.8 (from tensorboard>=2.0.0->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/6e/33/1ae0f71395e618d6140fbbc9587cc3156591f748226075e0f7d6f9176522/Markdown-3.3.4-py3-none-any.whl (97kB)
+Requirement already satisfied: google-auth<2,>=1.6.3 in /home/voshpde/.local/lib/python3.7/site-packages (from tensorboard>=2.0.0->pyannote.audio==1.1.1) (1.20.1)
+Requirement already satisfied: requests<3,>=2.21.0 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from tensorboard>=2.0.0->pyannote.audio==1.1.1) (2.22.0)
+Requirement already satisfied: protobuf>=3.6.0 in /home/voshpde/.local/lib/python3.7/site-packages (from tensorboard>=2.0.0->pyannote.audio==1.1.1) (3.13.0)
+Requirement already satisfied: setuptools>=41.0.0 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from tensorboard>=2.0.0->pyannote.audio==1.1.1) (41.2.0)
+Collecting tensorboard-plugin-wit>=1.6.0 (from tensorboard>=2.0.0->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/1a/c1/499e600ba0c618b451cd9c425ae1c177249940a2086316552fee7d86c954/tensorboard_plugin_wit-1.8.0-py3-none-any.whl (781kB)
+Requirement already satisfied: wheel>=0.26; python_version >= "3" in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from tensorboard>=2.0.0->pyannote.audio==1.1.1) (0.33.6)
+Collecting absl-py>=0.4 (from tensorboard>=2.0.0->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/92/c9/ef0fae29182d7a867d203f0eff8296b60da92098cc41db33a434f4be84bf/absl_py-0.12.0-py3-none-any.whl (129kB)
+Requirement already satisfied: numpy>=1.12.0 in /cm/shared/easybuild/software/SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages (from tensorboard>=2.0.0->pyannote.audio==1.1.1) (1.17.3)
+Collecting grpcio>=1.24.3 (from tensorboard>=2.0.0->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/73/36/6a33c9905efd03469b3aced40899fa0309b06cfd798ed6d2cc3592c4fbbb/grpcio-1.37.0-cp37-cp37m-manylinux2010_x86_64.whl (4.1MB)
+Requirement already satisfied: six>=1.10.0 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from tensorboard>=2.0.0->pyannote.audio==1.1.1) (1.12.0)
+Requirement already satisfied: cffi>=1.0 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from soundfile>=0.10.2->pyannote.audio==1.1.1) (1.12.3)
+Requirement already satisfied: pytz>=2017.2 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from pandas>=0.18.0->pyannote.audio==1.1.1) (2019.2)
+Requirement already satisfied: python-dateutil>=2.6.1 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from pandas>=0.18.0->pyannote.audio==1.1.1) (2.8.0)
+Requirement already satisfied: joblib>=0.9 in /home/voshpde/.local/lib/python3.7/site-packages (from pescador>=2.1.0->pyannote.audio==1.1.1) (0.16.0)
+Requirement already satisfied: pyzmq>=15.0 in /home/voshpde/.local/lib/python3.7/site-packages (from pescador>=2.1.0->pyannote.audio==1.1.1) (19.0.2)
+Requirement already satisfied: decorator>=4.0 in /home/voshpde/.local/lib/python3.7/site-packages (from pescador>=2.1.0->pyannote.audio==1.1.1) (4.4.2)
+Collecting typer[all]>=0.2.1 (from pyannote.database>=4.0->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/90/34/d138832f6945432c638f32137e6c79a3b682f06a63c488dcfaca6b166c64/typer-0.3.2-py3-none-any.whl
+Requirement already satisfied: threadpoolctl>=2.0.0 in /home/voshpde/.local/lib/python3.7/site-packages (from scikit-learn>=0.20.2->pyannote.audio==1.1.1) (2.1.0)
+Requirement already satisfied: scipy>=0.19.1 in /cm/shared/easybuild/software/SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages (from scikit-learn>=0.20.2->pyannote.audio==1.1.1) (1.3.1)
+Requirement already satisfied: tabulate>=0.7.7 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from pyannote.metrics>=2.3->pyannote.audio==1.1.1) (0.8.3)
+Collecting sympy>=1.1 (from pyannote.metrics>=2.3->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/aa/26/956fece0fc67a6c299557d22158503206d8f14b2e0acc2daf7f06c5f4721/sympy-1.8-py3-none-any.whl (6.1MB)
+Requirement already satisfied: matplotlib>=2.0.0 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.metrics>=2.3->pyannote.audio==1.1.1) (3.3.1)
+Requirement already satisfied: audioread>=2.0.0 in /home/voshpde/.local/lib/python3.7/site-packages (from librosa>=0.8.0->pyannote.audio==1.1.1) (2.1.8)
+Requirement already satisfied: numba>=0.43.0 in /home/voshpde/.local/lib/python3.7/site-packages (from librosa>=0.8.0->pyannote.audio==1.1.1) (0.43.0)
+Requirement already satisfied: resampy>=0.2.2 in /home/voshpde/.local/lib/python3.7/site-packages (from librosa>=0.8.0->pyannote.audio==1.1.1) (0.2.2)
+Requirement already satisfied: pooch>=1.0 in /home/voshpde/.local/lib/python3.7/site-packages (from librosa>=0.8.0->pyannote.audio==1.1.1) (1.1.1)
+Requirement already satisfied: simplejson>=3.8.1 in /home/voshpde/.local/lib/python3.7/site-packages (from pyannote.core>=4.1->pyannote.audio==1.1.1) (3.17.2)
+Collecting cmaes>=0.8.2 (from optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/01/1f/43b01223a0366171f474320c6e966c39a11587287f098a5f09809b45e05f/cmaes-0.8.2-py3-none-any.whl
+Collecting sqlalchemy>=1.1.0 (from optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/13/e4/88304da8f68cd75578765d2f00fd7247fe955fc69b9016c2c2f879e27619/SQLAlchemy-1.4.9-cp37-cp37m-manylinux2010_x86_64.whl (1.5MB)
+Requirement already satisfied: packaging>=20.0 in /home/voshpde/.local/lib/python3.7/site-packages (from optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1) (20.9)
+Collecting colorlog (from optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/32/e6/e9ddc6fa1104fda718338b341e4b3dc31cd8039ab29e52fc73b508515361/colorlog-5.0.1-py2.py3-none-any.whl
+Collecting cliff (from optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/a2/d6/7d9acb68a77acd140be7fececb7f2701b2a29d2da9c54184cb8f93509590/cliff-3.7.0-py3-none-any.whl (80kB)
+Collecting alembic (from optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/72/a4/97eb6273839655cac14947986fa7a5935350fcfd4fff872e9654264c82d8/alembic-1.5.8-py2.py3-none-any.whl (159kB)
+Collecting requests-oauthlib>=0.7.0 (from google-auth-oauthlib<0.5,>=0.4.1->tensorboard>=2.0.0->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/a3/12/b92740d845ab62ea4edf04d2f4164d82532b5a0b03836d4d4e71c6f3d379/requests_oauthlib-1.3.0-py2.py3-none-any.whl
+Requirement already satisfied: importlib-metadata; python_version < "3.8" in /home/voshpde/.local/lib/python3.7/site-packages (from markdown>=2.6.8->tensorboard>=2.0.0->pyannote.audio==1.1.1) (1.7.0)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in /home/voshpde/.local/lib/python3.7/site-packages (from google-auth<2,>=1.6.3->tensorboard>=2.0.0->pyannote.audio==1.1.1) (0.2.8)
+Requirement already satisfied: rsa<5,>=3.1.4; python_version >= "3.5" in /home/voshpde/.local/lib/python3.7/site-packages (from google-auth<2,>=1.6.3->tensorboard>=2.0.0->pyannote.audio==1.1.1) (4.6)
+Requirement already satisfied: certifi>=2017.4.17 in /home/voshpde/.local/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard>=2.0.0->pyannote.audio==1.1.1) (2020.6.20)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard>=2.0.0->pyannote.audio==1.1.1) (1.25.3)
+Requirement already satisfied: chardet<3.1.0,>=3.0.2 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard>=2.0.0->pyannote.audio==1.1.1) (3.0.4)
+Requirement already satisfied: idna<2.9,>=2.5 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from requests<3,>=2.21.0->tensorboard>=2.0.0->pyannote.audio==1.1.1) (2.8)
+Requirement already satisfied: pycparser in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from cffi>=1.0->soundfile>=0.10.2->pyannote.audio==1.1.1) (2.19)
+Requirement already satisfied: click<7.2.0,>=7.1.1 in /home/voshpde/.local/lib/python3.7/site-packages (from typer[all]>=0.2.1->pyannote.database>=4.0->pyannote.audio==1.1.1) (7.1.2)
+Collecting shellingham<2.0.0,>=1.3.0; extra == "all" (from typer[all]>=0.2.1->pyannote.database>=4.0->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/76/94/7a764d57d0f46534e0022e651da6547bc5cfe7b6372e7e0ed1dde6f5cb67/shellingham-1.4.0-py2.py3-none-any.whl
+Collecting colorama<0.5.0,>=0.4.3; extra == "all" (from typer[all]>=0.2.1->pyannote.database>=4.0->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/44/98/5b86278fbbf250d239ae0ecb724f8572af1c91f4a11edf4d36a206189440/colorama-0.4.4-py2.py3-none-any.whl
+Requirement already satisfied: mpmath>=0.19 in /cm/shared/easybuild/software/SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages (from sympy>=1.1->pyannote.metrics>=2.3->pyannote.audio==1.1.1) (1.1.0)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.3 in /home/voshpde/.local/lib/python3.7/site-packages (from matplotlib>=2.0.0->pyannote.metrics>=2.3->pyannote.audio==1.1.1) (2.4.7)
+Requirement already satisfied: kiwisolver>=1.0.1 in /home/voshpde/.local/lib/python3.7/site-packages (from matplotlib>=2.0.0->pyannote.metrics>=2.3->pyannote.audio==1.1.1) (1.2.0)
+Requirement already satisfied: cycler>=0.10 in /home/voshpde/.local/lib/python3.7/site-packages (from matplotlib>=2.0.0->pyannote.metrics>=2.3->pyannote.audio==1.1.1) (0.10.0)
+Requirement already satisfied: llvmlite>=0.28.0dev0 in /home/voshpde/.local/lib/python3.7/site-packages (from numba>=0.43.0->librosa>=0.8.0->pyannote.audio==1.1.1) (0.32.1)
+Requirement already satisfied: appdirs in /home/voshpde/.local/lib/python3.7/site-packages (from pooch>=1.0->librosa>=0.8.0->pyannote.audio==1.1.1) (1.4.4)
+Collecting greenlet!=0.4.17; python_version >= "3" (from sqlalchemy>=1.1.0->optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/c6/25/f52f0dde4135833c2f85eae30a749d260231065b46942534df8366d7e1ec/greenlet-1.0.0-cp37-cp37m-manylinux2010_x86_64.whl (160kB)
+Collecting stevedore>=2.0.1 (from cliff->optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/d4/49/b602307aeac3df3384ff1fcd05da9c0376c622a6c48bb5325f28ab165b57/stevedore-3.3.0-py3-none-any.whl (49kB)
+Requirement already satisfied: pbr!=2.1.0,>=2.0.0 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from cliff->optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1) (5.4.3)
+Collecting cmd2>=1.0.0 (from cliff->optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/15/8b/15061b32332bb35ea2a2f6263d0f616779d576e82739ec8e7fcf3c94abf5/cmd2-1.5.0-py3-none-any.whl (133kB)
+Collecting PrettyTable>=0.7.2 (from cliff->optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/26/1b/42b59a4038bc0442e3a0085bc0de385658131eef8a88946333f870559b09/prettytable-2.1.0-py3-none-any.whl
+Collecting Mako (from alembic->optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/f3/54/dbc07fbb20865d3b78fdb7cf7fa713e2cba4f87f71100074ef2dc9f9d1f7/Mako-1.1.4-py2.py3-none-any.whl (75kB)
+Collecting python-editor>=0.3 (from alembic->optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Using cached https://files.pythonhosted.org/packages/c6/d3/201fc3abe391bbae6606e6f1d598c15d367033332bd54352b12f35513717/python_editor-1.0.4-py3-none-any.whl
+Collecting oauthlib>=3.0.0 (from requests-oauthlib>=0.7.0->google-auth-oauthlib<0.5,>=0.4.1->tensorboard>=2.0.0->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/05/57/ce2e7a8fa7c0afb54a0581b14a65b56e62b5759dbc98e80627142b8a3704/oauthlib-3.1.0-py2.py3-none-any.whl (147kB)
+Requirement already satisfied: zipp>=0.5 in /home/voshpde/.local/lib/python3.7/site-packages (from importlib-metadata; python_version < "3.8"->markdown>=2.6.8->tensorboard>=2.0.0->pyannote.audio==1.1.1) (3.1.0)
+Requirement already satisfied: pyasn1<0.5.0,>=0.4.6 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from pyasn1-modules>=0.2.1->google-auth<2,>=1.6.3->tensorboard>=2.0.0->pyannote.audio==1.1.1) (0.4.7)
+Requirement already satisfied: wcwidth>=0.1.7 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from cmd2>=1.0.0->cliff->optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1) (0.1.7)
+Requirement already satisfied: attrs>=16.3.0 in /home/voshpde/.local/lib/python3.7/site-packages (from cmd2>=1.0.0->cliff->optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1) (20.2.0)
+Collecting pyperclip>=1.6 (from cmd2>=1.0.0->cliff->optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1)
+  Downloading https://files.pythonhosted.org/packages/a7/2c/4c64579f847bd5d539803c8b909e54ba087a79d01bb3aba433a95879a6c5/pyperclip-1.8.2.tar.gz
+Requirement already satisfied: MarkupSafe>=0.9.2 in /cm/shared/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/site-packages (from Mako->alembic->optuna>=1.4->pyannote.pipeline<2.0.0,>=1.5.2->pyannote.audio==1.1.1) (1.1.1)
+Building wheels for collected packages: pescador, pyperclip
+  Building wheel for pescador (setup.py): started
+  Building wheel for pescador (setup.py): finished with status 'done'
+  Created wheel for pescador: filename=pescador-2.1.0-cp37-none-any.whl size=21076 sha256=cde28bdfef76d7d2fdad9ba866344084ecf618120b9d2ac52b782aa60a237815
+  Stored in directory: /home/voshpde/.cache/pip/wheels/e7/e7/2d/de501314d1f03d8607aed0f6b48e50d8699f681745003aaa5b
+  Building wheel for pyperclip (setup.py): started
+  Building wheel for pyperclip (setup.py): finished with status 'done'
+  Created wheel for pyperclip: filename=pyperclip-1.8.2-cp37-none-any.whl size=11109 sha256=f7a02aaaaacc33ae8a756946b17f06b3270f605f2c886581414ac98d5d01d532
+  Stored in directory: /home/voshpde/.cache/pip/wheels/25/af/b8/3407109267803f4015e1ee2ff23be0c8c19ce4008665931ee1
+Successfully built pescador pyperclip
+Installing collected packages: shellingham, colorama, typer, pyannote.database, cmaes, greenlet, sqlalchemy, colorlog, stevedore, pyperclip, cmd2, PrettyTable, cliff, Mako, python-editor, alembic, optuna, pyannote.pipeline, oauthlib, requests-oauthlib, google-auth-oauthlib, markdown, tensorboard-plugin-wit, absl-py, grpcio, tensorboard, pescador, sortedcollections, sympy, pyannote.metrics, pyannote.audio
+Successfully installed Mako-1.1.4 PrettyTable-2.1.0 absl-py-0.12.0 alembic-1.5.8 cliff-3.7.0 cmaes-0.8.2 cmd2-1.5.0 colorama-0.4.4 colorlog-5.0.1 google-auth-oauthlib-0.4.4 greenlet-1.0.0 grpcio-1.37.0 markdown-3.3.4 oauthlib-3.1.0 optuna-2.7.0 pescador-2.1.0 pyannote.audio-1.1.1 pyannote.database-4.1 pyannote.metrics-3.0.1 pyannote.pipeline-1.5.2 pyperclip-1.8.2 python-editor-1.0.4 requests-oauthlib-1.3.0 shellingham-1.4.0 sortedcollections-2.1.0 sqlalchemy-1.4.9 stevedore-3.3.0 sympy-1.8 tensorboard-2.4.1 tensorboard-plugin-wit-1.8.0 typer-0.3.2
+Using cache found in /home/voshpde/.cache/torch/hub/pyannote_pyannote-audio_master
+  0%|          | 0.00/901 [00:00<?, ?B/s]100%|██████████| 901/901 [00:00<00:00, 308kB/s]
+  0%|          | 0.00/1.49k [00:00<?, ?B/s]100%|██████████| 1.49k/1.49k [00:00<00:00, 533kB/s]Downloading list of pretrained models and pipelines to "/home/voshpde/.pyannote/hub/pretrained.yml".
+Downloading pretrained pipeline "dia_dihard" to "/home/voshpde/.pyannote/hub/pipelines/dia_dihard.zip".
+
+Using cache found in /home/voshpde/.cache/torch/hub/pyannote_pyannote-audio_master
+  0%|          | 0.00/2.41M [00:00<?, ?B/s]100%|██████████| 2.41M/2.41M [00:00<00:00, 34.8MB/s]
+Using cache found in /home/voshpde/.cache/torch/hub/pyannote_pyannote-audio_master
+  0%|          | 0.00/2.40M [00:00<?, ?B/s]100%|██████████| 2.40M/2.40M [00:00<00:00, 41.0MB/s]
+Using cache found in /home/voshpde/.cache/torch/hub/pyannote_pyannote-audio_master
+  0%|          | 0.00/16.3M [00:00<?, ?B/s] 34%|███▍      | 5.52M/16.3M [00:00<00:00, 57.8MB/s] 74%|███████▍  | 12.1M/16.3M [00:00<00:00, 60.6MB/s]100%|██████████| 16.3M/16.3M [00:00<00:00, 65.4MB/s]
+/home/voshpde/.local/lib/python3.7/site-packages/pyannote/audio/embedding/approaches/arcface_loss.py:170: FutureWarning: The 's' parameter is deprecated in favor of 'scale', and will be removed in a future release
+  warnings.warn(msg, FutureWarning)
+/home/voshpde/.local/lib/python3.7/site-packages/pyannote/audio/features/pretrained.py:156: UserWarning: Model was trained with 4s chunks and is applied on 2s chunks. This might lead to sub-optimal results.
+  warnings.warn(msg)
+Using cache found in /home/voshpde/.cache/torch/hub/pyannote_pyannote-audio_master
+/home/voshpde/.local/lib/python3.7/site-packages/sklearn/cluster/_affinity_propagation.py:152: FutureWarning: 'random_state' has been introduced in 0.23. It will be set to None starting from 0.25 which means that results will differ at every function call. Set 'random_state' to None to silence this warning, or to 0 to keep the behavior of versions <0.23.
+  FutureWarning)
+Downloading pretrained model "sad_dihard" to "/home/voshpde/.pyannote/hub/models/sad_dihard.zip".
+Downloading pretrained model "scd_dihard" to "/home/voshpde/.pyannote/hub/models/scd_dihard.zip".
+Downloading pretrained model "emb_voxceleb" to "/home/voshpde/.pyannote/hub/models/emb_voxceleb.zip".

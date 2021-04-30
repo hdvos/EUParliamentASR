@@ -159,7 +159,7 @@ class MyDiarizer():
             if not os.path.exists(output_folder2):
                 os.makedirs(output_folder2)
 
-            outfilename = os.path.join(output_folder, f'{i:03d}_{self.filebase}.wav')
+            outfilename = os.path.join(output_folder, f'{i:03d}_{turn.speaker}_{self.filebase}.wav')
             newAudio = original_wav[turn.start*1000:turn.end*1000]
             
             newAudio.export(outfilename, format="wav") #Exports to a wav file in the current path.

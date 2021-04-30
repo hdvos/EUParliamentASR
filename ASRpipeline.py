@@ -39,4 +39,6 @@ if __name__ == "__main__":
     if STAGE <= 2:
         try: 
             diarization_bookkeep
-        except NameError
+        except NameError:
+            # load diarization bookkeep
+            pass

@@ -6,6 +6,7 @@ from scipy.io import wavfile
 import os
 import pandas as pd
 from pprint import pprint
+from diarization.Diarization import DiarizationBookkeep
 
 from collections import namedtuple
 
@@ -362,8 +363,10 @@ def segment_all_files(folder="wav_files"):
     all_metadata.to_csv("audio_segmenter_2_results.csv", sep='\t')
 
 
-def SegmentTurnsFromBookkeep(bookkeepdata):
-    pass
+def SegmentTurnsFromBookkeep(bookkeepdata:DiarizationBookkeep, segmentation_worthyness:float = 45):
+    for segment in bookkeepdata.segments:
+        print(segment)
+    
 
 if __name__ == "__main__":
     segment_all_files(WAV_FILES)

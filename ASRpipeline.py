@@ -1,4 +1,6 @@
-from diarization.Diarization import MyDiarizer
+from diarization.Diarization import MyDiarizer, DiarizationBookkeep
+from segmentation.Segmentation import SegmentTurnsFromBookkeep
+
 from pprint import pprint
 from dataclasses import dataclass, asdict
 import os
@@ -12,7 +14,7 @@ def prepare_output_folder(foldername):
 
 
 # Params #TODO: add as cmd line parameters
-STAGE = 2   # a parameter that enables skipping a step
+STAGE = 1   # a parameter that enables skipping a step
 
 SAVE_DIARIZATION_WAVFILES = True
 DIARIZATION_WAVFILES_LOCATION = '/home/hugo/MEGA/work/ASR/build_pipeline/diarization/test_wav_out'
@@ -31,6 +33,10 @@ def do_diarization(wavfile_path):
     pprint(asdict(diarization_bookeep))
     return diarization_bookeep
 
+
+def do_segmentation(diarization_bookkeep):
+    SegmentTurnsFromBookkeep(diarization_bookeep)
+
 if __name__ == "__main__":
     if STAGE == 1:
         testwav = WAVFILE
@@ -42,3 +48,6 @@ if __name__ == "__main__":
         except NameError:
             # load diarization bookkeep
             pass
+    
+        do_segmentation(diarization_bookeep)
+        

@@ -33,6 +33,8 @@ class BookKeep:
     original_file:str
     segments:list
 
+DiarizationBookkeep = BookKeep # Renaming this to avoid ambiguity in the pipeline but not renaming every occerence in this script.
+
 @dataclass
 class BookKeepSegment(MyTurnContainer):
     filename:str = ''

@@ -395,6 +395,8 @@ class LengthSegmentationBookkeepSegment():
 
     time_segmented:bool
 
+    last_segment:bool = False
+
 def toframes(seconds:float, rate:int=44100, rounding:str='floor') -> int:
     if rounding == "floor":
         return math.floor(seconds*rate)
@@ -457,16 +459,54 @@ def segment_sound_wave_from_bookkeep(diarization_segment:DiarizationBookkeepSegm
         if not breaking_point:
             segment = WavdataContainer(wavdata_onechannel.data[current_location:], wavdata_onechannel.rate)
             segments.append(segment)
+            # create wavfilename
+            # write wavfile
+            absolute_start_point_seconds = diarization_segment.start + relative_start_point_seconds
+            absolute_start_point_frames = toframes(absolute_start_point_seconds, rounding='floor')
+            
+            absolute_breakpoint_frames = len(wavdata_onechannel.data)
+            absolute_breakpoint_seconds = toseconds(absolute_breakpoint_frames)
+
+            relative_start_point_frames = current_location
+            relative_start_point_seconds = toseconds(relative_start_point_frames)
+
+            absolute_start_point_seconds = diarization_segment.start + relative_start_point_seconds
+            absolute_start_point_frames = toframes(absolute_start_point_seconds, rounding='floor')
+
+            # create wavfilename
+            # write wavfile
+
+            bookkeepsegment = LengthSegmentationBookkeepSegment(
+                time_segmented_filename= 'TODO', 
+                time_segment_i = time_segment_i, 
+                diarization_wavfile= diarization_segment.filename, 
+                diarization_turn_i = diarization_segment.turn_i, 
+                speaker = diarization_segment.speaker,
+
+                absolute_start_seconds=absolute_start_point_seconds,
+                absolute_start_frames=absolute_start_point_frames,
+                
+                absolute_end_seconds=absolute_breakpoint_seconds,
+                absolute_end_frames=absolute_breakpoint_frames,
+
+                relative_start_seconds=relative_start_point_seconds,
+                relative_start_frames=relative_start_point_frames,
+
+                relative_end_seconds=relative_breakpoint_seconds,
+                relative_end_frames=relative_breakpoint_frames,
+                
+                time_segmented = True,
+                last_segment=True                        
+            )
             break
         
         segment = WavdataContainer(wavdata_onechannel.data[current_location:breaking_point.center], wavdata_onechannel.rate)
         segments.append(segment)
 
-
         # Create wavfilename
         # Write wavfile
         bookkeepsegment = LengthSegmentationBookkeepSegment(
-            time_segmented_filename= '', 
+            time_segmented_filename= 'TODO', 
             time_segment_i = time_segment_i, 
             diarization_wavfile= diarization_segment.filename, 
             diarization_turn_i = diarization_segment.turn_i, 
@@ -483,6 +523,7 @@ def segment_sound_wave_from_bookkeep(diarization_segment:DiarizationBookkeepSegm
 
             relative_end_seconds=relative_breakpoint_seconds,
             relative_end_frames=relative_breakpoint_frames,
+
             time_segmented = True
                         
         )
@@ -536,7 +577,8 @@ def SegmentTurnsFromBookkeep(bookkeepdata:DiarizationBookkeep, segmentation_wort
             pass
             # segment, update bookkeeping.
         print(segment)
-    
+    pprint(asdict(time_segment_bookkeep))
+    #store bookkeep TODO
 
 if __name__ == "__main__":
     segment_all_files(WAV_FILES)

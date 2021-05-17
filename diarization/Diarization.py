@@ -13,7 +13,7 @@ import json
 #TODO figure out what to do with logging.
 logging.basicConfig(filename='diarization.log', level=logging.INFO)
 
-@dataclass
+@dataclass      #TODO: myturncontainer in utils script
 class MyTurnContainer:
     start: float
     end : float
@@ -39,6 +39,7 @@ DiarizationBookkeep = BookKeep # Renaming this to avoid ambiguity in the pipelin
 class BookKeepSegment(MyTurnContainer):
     filename:str = ''
 
+DiarizationBookkeepSegment = BookKeepSegment # Renaming this to avoid ambiguity in the pipeline but not renaming every occerence in this script.
 
 # adapted from https://github.com/pyannote/pyannote-audio/tree/master/tutorials/pretrained/pipeline 
 class MyDiarizer():

@@ -6,8 +6,8 @@ from scipy.io import wavfile
 import os
 import pandas as pd
 from pprint import pprint
-from diarization.Diarization import DiarizationBookkeep
-
+from diarization.Diarization import DiarizationBookkeep, DiarizationBookkeepSegment, MyTurnContainer
+from dataclasses import dataclass, asdict
 from collections import namedtuple
 
 
@@ -101,6 +101,9 @@ def remove_channel_if_similar(data:np.ndarray) -> np.ndarray:
     else:
         raise ValueError("Data channels are not similar, so not removing one.")
 
+
+
+#TODO: document and sort out logging
 def prepare_data_for_segmentation(wavdata, filenm):
     data=wavdata.data
 
@@ -363,8 +366,175 @@ def segment_all_files(folder="wav_files"):
     all_metadata.to_csv("audio_segmenter_2_results.csv", sep='\t')
 
 
-def SegmentTurnsFromBookkeep(bookkeepdata:DiarizationBookkeep, segmentation_worthyness:float = 45):
+@dataclass
+class LengthSegmentationBookkeep():
+    original_filename:str
+    diarized_filename:str
+    segments:list
+
+@dataclass
+class LengthSegmentationBookkeepSegment():
+    absolute_start_seconds:float
+    absolute_start_frames:int
+    
+    absolute_end_seconds:float
+    absolute_end_frames:int
+
+    relative_start_seconds:float
+    relative_start_frames:int
+    
+    relative_end_seconds:float
+    relative_end_frames:int
+
+    time_segmented_filename:str
+    time_segment_i:int
+    
+    diarization_wavfile:str
+    diarization_turn_i:int
+    speaker:str
+
+    time_segmented:bool
+
+def toframes(seconds:float, rate:int=44100, rounding:str='floor') -> int:
+    if rounding == "floor":
+        return math.floor(seconds*rate)
+    elif rounding == "ceil":
+        return math.ceil(seconds*rate)
+    elif rounding == "round":
+        return round(seconds*rate)
+    else:
+        raise RuntimeError(f"No rounding method named {rounding}")
+
+def toseconds(frames, rate:int=44100) -> float:
+    return frames/rate
+
+def segment_sound_wave_from_bookkeep(diarization_segment:DiarizationBookkeepSegment, time_segment_bookkeep:LengthSegmentationBookkeep, wavdata_onechannel:WavdataContainer, desired_segment_length = 10, min_segment_length = 5, max_segment_length = 30, stride = 0.1, kernel_width = 0.5):
+    assert desired_segment_length > 0, "Must be positive"
+    assert min_segment_length >= 0, "segment length must be positive"
+    assert min_segment_length <= desired_segment_length, "Min segment length must be smaller or equal than desired segment length"
+    assert max_segment_length >= desired_segment_length, "max segment length must be larger or equal than desired segment length"
+    
+    segments = []
+
+
+    time_step = desired_segment_length * wavdata_onechannel.rate
+    current_location = 0
+    current_location_seconds = math.floor(current_location/wavdata_onechannel.rate)
+
+    time_segment_i = 1
+
+    window_minus = (min_segment_length - desired_segment_length) * wavdata_onechannel.rate
+    window_plus  = (max_segment_length - desired_segment_length) * wavdata_onechannel.rate
+    
+    # Loop setup
+    steps = 0    
+    search_window_center = current_location + time_step
+    search_window_min = search_window_center - window_minus
+    search_window_max = search_window_center + window_plus
+    search_window_max = min(search_window_max, len(wavdata_onechannel.data))
+    
+    while True:
+        
+        breaking_point = search_window_for_breaking_point(wavdata_onechannel, search_window_min, search_window_max)
+        if breaking_point:
+            relative_breakpoint_frames  = breaking_point.center
+            relative_breakpoint_seconds = toseconds(relative_breakpoint_frames)
+            
+            absolute_breakpoint_seconds = diarization_segment.start + relative_breakpoint_seconds
+            absolute_breakpoint_frames = toframes(absolute_breakpoint_seconds, rounding='ceil')
+
+            relative_start_point_frames = current_location
+            relative_start_point_seconds = toseconds(relative_start_point_frames)
+
+            absolute_start_point_seconds = diarization_segment.start + relative_start_point_seconds
+            absolute_start_point_frames = toframes(absolute_start_point_seconds, rounding='floor')
+
+            if absolute_breakpoint_seconds > diarization_segment.end:
+                raise RuntimeError(f"Absolute breaking point ({absolute_breakpoint}) cannot be larger than end point of diarization segment ({diarization_segment.end})")
+            print(diarization_segment)
+            print('breakpt', relative_breakpoint_seconds, absolute_breakpoint_seconds)
+            print('breakpt', relative_breakpoint_frames, absolute_breakpoint_frames)
+        if not breaking_point:
+            segment = WavdataContainer(wavdata_onechannel.data[current_location:], wavdata_onechannel.rate)
+            segments.append(segment)
+            break
+        
+        segment = WavdataContainer(wavdata_onechannel.data[current_location:breaking_point.center], wavdata_onechannel.rate)
+        segments.append(segment)
+
+
+        # Create wavfilename
+        # Write wavfile
+        bookkeepsegment = LengthSegmentationBookkeepSegment(
+            time_segmented_filename= '', 
+            time_segment_i = time_segment_i, 
+            diarization_wavfile= diarization_segment.filename, 
+            diarization_turn_i = diarization_segment.turn_i, 
+            speaker = diarization_segment.speaker,
+
+            absolute_start_seconds=absolute_start_point_seconds,
+            absolute_start_frames=absolute_start_point_frames,
+            
+            absolute_end_seconds=absolute_breakpoint_seconds,
+            absolute_end_frames=absolute_breakpoint_frames,
+
+            relative_start_seconds=relative_start_point_seconds,
+            relative_start_frames=relative_start_point_frames,
+
+            relative_end_seconds=relative_breakpoint_seconds,
+            relative_end_frames=relative_breakpoint_frames,
+            time_segmented = True
+                        
+        )
+
+        time_segment_bookkeep.segments.append(bookkeepsegment)
+        pprint(asdict(bookkeepsegment))
+        input()
+                
+        # Update
+        current_location = breaking_point.center + 1
+        current_location_seconds = math.floor(current_location/wavdata_onechannel.rate)
+
+        search_window_center = current_location + time_step
+        search_window_min = search_window_center - window_minus
+        search_window_max = search_window_center + window_plus
+        search_window_max = min(search_window_max, len(wavdata_onechannel.data))
+        steps += 1
+        time_segment_i += 1
+        
+        if current_location >= len(wavdata_onechannel.data):
+            break
+        # print(data[current_location])
+    print(segments[-1])
+    return segments
+
+def Segmentation_With_Bookkeep(segment: DiarizationBookkeepSegment, time_segment_bookkeep:LengthSegmentationBookkeep):
+    wavdata = read_wavfile(segment.filename)
+    wavdata_onechannel = prepare_data_for_segmentation(wavdata, segment.filename)
+    print(wavdata_onechannel.data.shape)
+    wav_segments = segment_sound_wave_from_bookkeep(segment, time_segment_bookkeep, wavdata_onechannel)
+    #  segment_sound_wave(wavdata_onechannel)
+
+    print('len', len(wav_segments))
+
+
+def SegmentTurnsFromBookkeep(bookkeepdata:DiarizationBookkeep, segmentation_worthyness:float = 45.0):
+    time_segment_bookkeep = LengthSegmentationBookkeep(
+        original_filename='',
+        diarized_filename='',
+        segments=[]
+    )
     for segment in bookkeepdata.segments:
+        if (segment.end - segment.start) < segmentation_worthyness:
+            print("too short... ")
+            # update bookeep
+            pass
+            # No further segmentation
+            # Update bookkeeping
+        else:
+            Segmentation_With_Bookkeep(segment, time_segment_bookkeep)
+            pass
+            # segment, update bookkeeping.
         print(segment)
     
 

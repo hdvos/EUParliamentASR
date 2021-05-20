@@ -1,5 +1,3 @@
-
-
 import numpy as np
 import math
 from scipy.io import wavfile
@@ -506,9 +504,9 @@ def segment_sound_wave_from_bookkeep(diarization_segment:DiarizationBookkeepSegm
             absolute_start_point_frames = toframes(absolute_start_point_seconds, rounding='floor')
 
             wavfilename_out = create_wavfilename(diarization_segment, time_segment_i, output_root)
-            input(wavfilename_out)
+            # input(wavfilename_out)
             write_wavfile(wavfilename_out, segment)
-            input("wavfile written")
+            # input("wavfile written")
 
             bookkeepsegment = LengthSegmentationBookkeepSegment(
                 time_segmented_filename= 'TODO', 
@@ -539,9 +537,9 @@ def segment_sound_wave_from_bookkeep(diarization_segment:DiarizationBookkeepSegm
         segments.append(segment)
 
         wavfilename_out = create_wavfilename(diarization_segment, time_segment_i, output_root)
-        input(wavfilename_out)
+        # input(wavfilename_out)
         write_wavfile(wavfilename_out, segment)
-        input("wavfile written")
+        # input("wavfile written")
         bookkeepsegment = LengthSegmentationBookkeepSegment(
             time_segmented_filename= wavfilename_out, 
             time_segment_i = time_segment_i, 
@@ -566,8 +564,8 @@ def segment_sound_wave_from_bookkeep(diarization_segment:DiarizationBookkeepSegm
         )
 
         time_segment_bookkeep.segments.append(bookkeepsegment)
-        pprint(asdict(bookkeepsegment))
-        input()
+        # pprint(asdict(bookkeepsegment))
+        # input()
                 
         # Update
         current_location = breaking_point.center + 1
@@ -586,74 +584,100 @@ def segment_sound_wave_from_bookkeep(diarization_segment:DiarizationBookkeepSegm
     print(segments[-1])
     return segments
 
-def Segmentation_With_Bookkeep(segment: DiarizationBookkeepSegment, time_segment_bookkeep:LengthSegmentationBookkeep, output_root:str):
-    wavdata = read_wavfile(segment.filename)
-    wavdata_onechannel = prepare_data_for_segmentation(wavdata, segment.filename)
-    print(wavdata_onechannel.data.shape)
-    wav_segments = segment_sound_wave_from_bookkeep(segment, time_segment_bookkeep, wavdata_onechannel, output_root)
-    #  segment_sound_wave(wavdata_onechannel)
+def Segmentation_With_Bookkeep(diarization_segment: DiarizationBookkeepSegment, time_segment_bookkeep:LengthSegmentationBookkeep, output_root:str):
+    """Segment an already diarized wavfile in segments between 10 and 30 seconds.
 
-    print('len', len(wav_segments))
+    :param diarization_segment: A bookkeeping segment from the diarization bookkeeping.
+    :type diarization_segment: DiarizationBookkeepSegment
+    :param time_segment_bookkeep: a bookkeeping object where the bookkeping of this segmentation will be done/
+    :type time_segment_bookkeep: LengthSegmentationBookkeep
+    :param output_root: The folder where the resulting wavfiles will be stored.
+    :type output_root: str
+    """
+    wavdata = read_wavfile(diarization_segment.filename)
+    wavdata_onechannel = prepare_data_for_segmentation(wavdata, diarization_segment.filename)
+    print(wavdata_onechannel.data.shape)
+    wav_segments = segment_sound_wave_from_bookkeep(diarization_segment, time_segment_bookkeep, wavdata_onechannel, output_root)
+
 
 def store_segmentation_bookkeep(time_segment_bookkeep:LengthSegmentationBookkeep, filename:str):
+    """Store the bookkeeping as a json file in the desired place.
+
+    :param time_segment_bookkeep: The bookeeping object
+    :type time_segment_bookkeep: LengthSegmentationBookkeep
+    :param filename: The filename.
+    :type filename: str
+    :raises ValueError: If the filename does not end in .json
+    """
     if not filename.endswith(".json"):
-        raise ValueError(f"{filename} is invalid. Please enter a json filename")
+        raise ValueError(f"{filename} is invalid. Please enter a json filename (with the .json extension)")
+
     with open(filename, 'wt') as out:
         json.dump(asdict(time_segment_bookkeep), out)
 
     print(f"Json stored at {filename}")
 
-def SegmentTurnsFromBookkeep(bookkeepdata:DiarizationBookkeep, output_root:str, bookkeep_json_file:str ,segmentation_worthyness:float = 45.0):
+def SegmentTurnsFromBookkeep(bookkeepdata:DiarizationBookkeep, output_root:str, bookkeep_json_file:str ,segmentation_worthyness:float = 45.0) -> LengthSegmentationBookkeep:
+    """Takes a diarization bookkeep object and segment wavfile unless they are too short to be segmented.
+
+    :param bookkeepdata: An object containing bookkeeping data as a result of diarization.
+    :type bookkeepdata: DiarizationBookkeep
+    :param output_root: The root folder where the output folder  structure will be created. Every "Motherfile" will get its own folder containing the segmented files.
+    :type output_root: str
+    :param bookkeep_json_file: the name of the json file that will be the result of this
+    :type bookkeep_json_file: str
+    :param segmentation_worthyness: if a wavfile is shorter than this, it will not be further segmented, defaults to 45.0
+    :type segmentation_worthyness: float, optional
+    """
     assert os.path.exists(output_root), "Output folder should exist"
     assert os.path.isdir(output_root), "Output root should be a directory"
 
+    # Initialize the bookkeeping object.
     time_segment_bookkeep = LengthSegmentationBookkeep(
         original_filename='',
         diarized_filename='',
         segments=[]
     )
-    for segment in bookkeepdata.segments:
-        if (segment.end - segment.start) < segmentation_worthyness:
-            print("too short... ")
-            wavfilename_out = create_wavfilename(segment, 0, output_root)
-            input(wavfilename_out)
-            shutil.copy2(segment.filename, wavfilename_out)
-            input("wavfile written")
 
+    for diarization_segment in bookkeepdata.segments:
+        # If the segment is too short, it will be copied as whole and added to the bookkeeping object.
+        if (diarization_segment.end - diarization_segment.start) < segmentation_worthyness:
+            
+            wavfilename_out:str = create_wavfilename(diarization_segment, 0, output_root)
+            shutil.copy2(diarization_segment.filename, wavfilename_out)
+            
             bookkeepsegment = LengthSegmentationBookkeepSegment(
-                time_segmented_filename= 'TODO', 
-                time_segment_i = 0, 
-                diarization_wavfile= segment.filename, 
-                diarization_turn_i = segment.turn_i, 
-                speaker = segment.speaker,
+                time_segmented_filename= wavfilename_out, 
+                time_segment_i = 0,     # If it is copied as a whole, the time segment i is set to 0.
+                diarization_wavfile= diarization_segment.filename, 
+                diarization_turn_i = diarization_segment.turn_i, 
+                speaker = diarization_segment.speaker,
 
-                absolute_start_seconds=segment.start,
-                absolute_start_frames=toframes(segment.start),
+                absolute_start_seconds=diarization_segment.start,
+                absolute_start_frames=toframes(diarization_segment.start),
                 
-                absolute_end_seconds=segment.end,
-                absolute_end_frames=toframes(segment.end),
+                absolute_end_seconds=diarization_segment.end,
+                absolute_end_frames=toframes(diarization_segment.end),
 
                 relative_start_seconds=0,
                 relative_start_frames=0,
 
-                relative_end_seconds=segment.end - segment.start,
-                relative_end_frames=toframes(segment.end - segment.start, rounding='floor'),
+                relative_end_seconds=diarization_segment.end - diarization_segment.start,
+                relative_end_frames=toframes(diarization_segment.end - diarization_segment.start, rounding='floor'),
                 
-                time_segmented = False,
-                last_segment=True                        
+                time_segmented = False, # It is not segmented based on length.
+                last_segment=True       # If it is the only segment, it is therefore the last.                 
             )
             time_segment_bookkeep.segments.append(bookkeepsegment)
-            pass
-            # No further segmentation
-            # Update bookkeeping
+
         else:
-            Segmentation_With_Bookkeep(segment, time_segment_bookkeep, output_root)
-            pass
-            # segment, update bookkeeping.
-        print(segment)
-    pprint(asdict(time_segment_bookkeep))
+            Segmentation_With_Bookkeep(diarization_segment, time_segment_bookkeep, output_root)
+
+        
+    # pprint(asdict(time_segment_bookkeep))
     store_segmentation_bookkeep(time_segment_bookkeep, bookkeep_json_file)
 
+#TODO remove main?
 if __name__ == "__main__":
     segment_all_files(WAV_FILES)
     # file_metadata = process_file(testfilename)

@@ -367,7 +367,7 @@ def segment_all_files(folder="wav_files"):
 @dataclass
 class LengthSegmentationBookkeep():
     original_filename:str
-    diarized_filename:str
+    # diarized_filename:str
     segments:list
 
 @dataclass
@@ -634,8 +634,8 @@ def SegmentTurnsFromBookkeep(bookkeepdata:DiarizationBookkeep, output_root:str, 
 
     # Initialize the bookkeeping object.
     time_segment_bookkeep = LengthSegmentationBookkeep(
-        original_filename='',
-        diarized_filename='',
+        original_filename=bookkeepdata.original_file,
+        # diarized_filename='',
         segments=[]
     )
 

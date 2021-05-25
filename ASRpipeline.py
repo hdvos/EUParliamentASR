@@ -28,7 +28,7 @@ DIARIZATION_BOOKKEEP_FILE = "test_diarization_bookkeep.json"
 WAVFILE = '/home/hugo/MEGA/work/ASR/build_pipeline/testfile2.wav'
 
 SEGMENTATION_OUTPUT_FOLDER = "/home/hugo/MEGA/work/ASR/EUParliamentASR/segmentation_wavfiles"
-SEGMENTATION_JSON_OUTPUT = "/home/hugo/MEGA/work/ASR/EUParliamentASR/Segmentation_bookkeep.json"
+SEGMENTATION_BOOKKEEP_FILE = "/home/hugo/MEGA/work/ASR/EUParliamentASR/Segmentation_bookkeep.json"
 
 def do_diarization(wavfile_path):
     assert os.path.exists(wavfile_path)
@@ -74,5 +74,5 @@ if __name__ == "__main__":
             diarization_bookkeep=read_diarization_bookkeep(DIARIZATION_BOOKKEEP_FILE)
             print("diarization bookkeep loaded")
     
-        do_segmentation(diarization_bookkeep, SEGMENTATION_OUTPUT_FOLDER, SEGMENTATION_JSON_OUTPUT)
+        do_segmentation(diarization_bookkeep, SEGMENTATION_OUTPUT_FOLDER, SEGMENTATION_BOOKKEEP_FILE)
         

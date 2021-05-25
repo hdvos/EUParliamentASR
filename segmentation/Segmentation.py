@@ -11,13 +11,11 @@ import shutil
 import json
 
 
-SEGMENTATION_OUTPUT_FOLDER = "/home/hugo/MEGA/work/ASR/EUParliamentASR/segmentation_wavfiles"
-
 WavdataContainer = namedtuple("WavdataContainer", ["data", "rate"])
-WAV_FILES = "/data/voshpde/wav_files/zipfiles"
-CSV_FOLDER = "csv_files3"
-if not os.path.exists(CSV_FOLDER):
-    os.makedirs(CSV_FOLDER)
+# WAV_FILES = "/data/voshpde/wav_files/zipfiles"
+# CSV_FOLDER = "csv_files3"
+# if not os.path.exists(CSV_FOLDER):
+    # os.makedirs(CSV_FOLDER)
 
 def read_wavfile(filename):
     rate, data = wavfile.read(filename)
@@ -101,7 +99,7 @@ def remove_channel_if_similar(data:np.ndarray) -> np.ndarray:
 
 
 
-#TODO: document and sort out logging
+# TODO: document and sort out logging
 def prepare_data_for_segmentation(wavdata, filenm):
     data=wavdata.data
 
@@ -127,69 +125,8 @@ def prepare_data_for_segmentation(wavdata, filenm):
 
 #%%
 
-def get_wavfile_core(wavfile_name:str) -> str:
-    """Get the name of a (wav) file without the path before and the trailing file extension. E.g.: foo/bar/baz.wav -> baz
-    NOTE: this could also have been done with os.path methods. TODO: rewrite with os.path methods.
-
-    :param wavfile_name: name of a wav-file
-    :type wavfile_name: str
-    :return: the filename without the path and trailing file extension.
-    :rtype: str
-    """
-
-    # wavfile_core = wavfile_name.split("/")[-1].split('.')[0]
-    basename = os.path.basename(wavfile_name)
-    wavfile_core  = os.path.splitext(basename)[0]
-    # print(f"---Wavfile core = {wavfile_core}")
-    return wavfile_core
 
 
-def make_wavfile_output_folder(original_wavfile_name:str, location:str = "separated_wavfiles3") -> None:
-    """Makes a folder where segments will be stored.
-
-    :param original_wavfile_name: The filename of the original wavfile
-    :type original_wavfile_name: str
-    :param location: the location where the folder needs to be created, defaults to "separated_wavfiles"
-    :type location: str, optional
-    :raises RuntimeError: If the program has no permission to create the foler.
-    """
-
-    if not os.path.exists(location):
-        os.mkdir(location)
-        
-    wavfile_core = get_wavfile_core(original_wavfile_name)
-    wavfiles_location = os.path.join(location, wavfile_core)
-    if not os.path.exists(wavfiles_location):
-        os.makedirs(wavfiles_location)
-    else:
-        print(f"--- Clear folder")
-#         input(f"rm {wavfiles_location}/*")
-        os.system(f"rm {wavfiles_location}/*")
-    
-    return wavfiles_location
-
-def make_filepath(folder, base, index):
-    filename = f"{index:03d}_{base}.wav"
-    return os.path.join(folder, filename)
-    
-
-def write_wav(segment, fragment_index, folder, filename_base = 'test'):
-    filepath = make_filepath(folder, filename_base, fragment_index)
-    print(f"--- Write {filepath}")
-    wavfile.write(filepath, segment.rate, segment.data)
-    filepath_pcm = filepath + ".pcm"
-#     print("--- Convert to pcm.")
-    print(f"---- Transform to {filepath_pcm}")
-    os.system( f"sox {filepath} -t wav -r 16000 -b 16 {filepath_pcm}")
-    print(f"---- Remove {filepath}")
-    os.system( f"rm {filepath}")
-    assert os.path.exists(filepath_pcm), "filepath should still exist"
-    assert not os.path.exists(filepath), "filepath should be removed"
-    print("-"*30)
-
-#     print(f"--- Converted to pcm. \n--- New filename: {filepath_pcm}")
-    
-    return filepath
 
 #%% 
 
@@ -235,133 +172,6 @@ def search_window_for_breaking_point(wavdata_onechannel, search_window_min, sear
     
     print("Best Kernel:", best_kernel)
     return best_kernel
-
-def segment_sound_wave(wavdata_onechannel, desired_segment_length = 10, min_segment_length = 5, max_segment_length = 30, stride = 0.1, kernel_width = 0.5):
-    assert desired_segment_length > 0, "Must be positive"
-    assert min_segment_length >= 0, "segment length must be positive"
-    assert min_segment_length <= desired_segment_length, "Min segment length must be smaller or equal than desired segment length"
-    assert max_segment_length >= desired_segment_length, "max segment length must be larger or equal than desired segment length"
-    
-    segments = []
-
-    time_step = desired_segment_length * wavdata_onechannel.rate
-    current_location = 0
-
-    window_minus = (min_segment_length - desired_segment_length) * wavdata_onechannel.rate
-    window_plus  = (max_segment_length - desired_segment_length) * wavdata_onechannel.rate
-    
-    # Loop setup
-    steps = 0    
-    search_window_center = current_location + time_step
-    search_window_min = search_window_center - window_minus
-    search_window_max = search_window_center + window_plus
-    search_window_max = min(search_window_max, len(wavdata_onechannel.data))
-    
-    while True:
-        
-        breaking_point = search_window_for_breaking_point(wavdata_onechannel, search_window_min, search_window_max)
-        if not breaking_point:
-            segment = WavdataContainer(wavdata_onechannel.data[current_location:], wavdata_onechannel.rate)
-            segments.append(segment)
-            break
-        
-        segment = WavdataContainer(wavdata_onechannel.data[current_location:breaking_point.center], wavdata_onechannel.rate)
-        segments.append(segment)
-                
-        # Update
-        current_location = breaking_point.center + 1
-        
-        search_window_center = current_location + time_step
-        search_window_min = search_window_center - window_minus
-        search_window_max = search_window_center + window_plus
-        search_window_max = min(search_window_max, len(wavdata_onechannel.data))
-        steps += 1
-        
-        if current_location >= len(wavdata_onechannel.data):
-            break
-        # print(data[current_location])
-    print(segments[-1])
-    return segments
-
-
-def process_file(filenm_gz:str):
-    """Main logic for segmenting a single wavfile.
-
-    :param filenm: Path to the original wavfile
-    :type filenm: str
-    :param csvfile_output_location: Location (folder) where the segments will be stored, defaults to 'gridsearch_results'
-    :type csvfile_output_location: str, optional
-    """
-    print(filenm_gz)
-    filenm = filenm_gz.replace(".gz", '')
-
-
-#    os.system(f"gunzip -k {filenm_gz}")
-    os.system(f"gunzip -c {filenm_gz} > {filenm}")
-    assert os.path.exists(filenm_gz), "Gzip file should still exist"
-    assert os.path.exists(filenm), "Unzipped file must be created"
-    # # TODO: UNZIP
-
-    try:
-        wavdata = read_wavfile(filenm)
-        print(wavdata.data.shape)
-        wavdata_onechannel = prepare_data_for_segmentation(wavdata, filenm)
-        print(wavdata_onechannel.data.shape)
-
-        segments = segment_sound_wave(wavdata_onechannel)
-        # pprint(segments)
-        segments_metadata = []
-
-        wavfiles_location = make_wavfile_output_folder(filenm)
-        filenm_core = get_wavfile_core(filenm)
-
-        print(wavfiles_location)
-        for i, segment in enumerate(segments, 1):
-            segment_filename = write_wav(segment, i, wavfiles_location, filenm_core)
-            segment_length = len(segment.data)/segment.rate
-            identifier = filenm_core
-            segment_metadata = { "identifier":identifier,
-                                 "segment_length": segment_length,
-                                 "filename":segment_filename,
-                                  }
-            segments_metadata.append(segment_metadata)
-
-        segments_metadata_df = pd.DataFrame.from_dict(segments_metadata)
-        csv_filename = os.path.join(CSV_FOLDER, f"{filenm_core}_metadata.csv")
-        segments_metadata_df.to_csv(csv_filename, sep="\t")
-
-        file_metadata = {   "filename":os.path.basename(filenm_gz),
-                            "average_length": segments_metadata_df.segment_length.mean(),
-                            "nr_segments":segments_metadata_df.shape[0]
-                        }
-
-        
-
-    finally:
-        os.system(f"rm {filenm}")
-        assert os.path.exists(filenm_gz), "Gzip file should still exist"
-        assert not os.path.exists(filenm), "Unzipped file must be deleted"
-
-    return file_metadata
-
-def segment_all_files(folder="wav_files"):
-    assert os.path.exists(folder)
-    filenames = os.listdir(folder)
-    filenames = [os.path.join(folder, filenm) for filenm in filenames if filenm.endswith(".gz")]
-
-    files_metadata = []
-
-    for filenm in filenames:
-        try:
-            file_metadata = process_file(filenm)
-            files_metadata.append(file_metadata)
-            print(file_metadata)
-        except IndexError as msg:
-            with open("AssertionErrorLog.txt", 'a') as o:
-                o.write(f"{filenm}\t{msg}\n{'-'*50}")
-
-    all_metadata = pd.DataFrame.from_dict(files_metadata)
-    all_metadata.to_csv("audio_segmenter_2_results.csv", sep='\t')
 
 
 @dataclass
@@ -677,10 +487,10 @@ def SegmentTurnsFromBookkeep(bookkeepdata:DiarizationBookkeep, output_root:str, 
     # pprint(asdict(time_segment_bookkeep))
     store_segmentation_bookkeep(time_segment_bookkeep, bookkeep_json_file)
 
-#TODO remove main?
-if __name__ == "__main__":
-    segment_all_files(WAV_FILES)
-    # file_metadata = process_file(testfilename)
-    # print(file_metadata)
+# #TODO remove main?
+# if __name__ == "__main__":
+#     segment_all_files(WAV_FILES)
+#     # file_metadata = process_file(testfilename)
+#     # print(file_metadata)
 
 # %%

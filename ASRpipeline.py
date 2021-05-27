@@ -17,19 +17,19 @@ def prepare_output_folder(foldername:str):
 
 
 # Params #TODO: add as cmd line parameters
-STAGE = 2   # a parameter that enables skipping a step
+STAGE = 1   # a parameter that enables skipping a step
 
 SAVE_DIARIZATION_WAVFILES = True
-DIARIZATION_WAVFILES_LOCATION = '/home/hugo/MEGA/work/ASR/build_pipeline/diarization/test_wav_out'
+DIARIZATION_WAVFILES_LOCATION = 'diarization/test_wav_out'
 if not os.path.exists(DIARIZATION_WAVFILES_LOCATION):
     os.makedirs(DIARIZATION_WAVFILES_LOCATION)
 
 DIARIZATION_BOOKKEEP_FILE = "test_diarization_bookkeep.json"
 
-WAVFILE = '/home/hugo/MEGA/work/ASR/build_pipeline/testfile2.wav'
+WAVFILE = 'testfile2.wav'
 
-SEGMENTATION_OUTPUT_FOLDER = "/home/hugo/MEGA/work/ASR/EUParliamentASR/segmentation_wavfiles"
-SEGMENTATION_BOOKKEEP_FILE = "/home/hugo/MEGA/work/ASR/EUParliamentASR/Segmentation_bookkeep.json"
+SEGMENTATION_OUTPUT_FOLDER = "segmentation_wavfiles"
+SEGMENTATION_BOOKKEEP_FILE = "Segmentation_bookkeep.json"
 
 def do_diarization(wavfile_path):
     assert os.path.exists(wavfile_path)

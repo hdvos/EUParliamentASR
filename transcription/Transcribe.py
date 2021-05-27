@@ -26,7 +26,7 @@ class InferenceResultSegment():
 
 @dataclass
 class InferenceResults():
-    original_filename:str
+    original_wavfile:str
     segments:list
 
 # https://www.analyticsvidhya.com/blog/2021/02/hugging-face-introduces-the-first-automatic-speech-recognition-model-wav2vec2/
@@ -94,6 +94,8 @@ def results_to_json(results:InferenceResults, filename:str):
     with open(filename, 'wt') as out:
         json.dump(asdict(results), out)
 
+    print(f"Wrote json to {filename}")
+
 
 def results_to_csv(results:list, filename:str):
     if not filename.endswith(".csv"):
@@ -103,18 +105,21 @@ def results_to_csv(results:list, filename:str):
         mywriter = writer(out, delimiter = '\t')
         mywriter.writerow(["speaker", 'inferred_text', 'duration' , 'absolute_start_seconds', 'absolute_end_seconds', 'segment_wavfile', 'original_wavfile'])
         for result in results.segments:
+            print([result.speaker, result.inferred_text, result.absolute_end_seconds-result.absolute_start_seconds , result.absolute_start_seconds, result.absolute_end_seconds, result.wavfile, result.original_wavfile])
             mywriter.writerow([result.speaker, result.inferred_text, result.absolute_end_seconds-result.absolute_start_seconds , result.absolute_start_seconds, result.absolute_end_seconds, result.wavfile, result.original_wavfile])
 
+    print(f"Wrote csv to {filename}")
+
 def make_json_filename(results:InferenceResults, folder = './') -> str:
-    basename = os.path.basename(results.original_filename)
-    naked_basename = os.path.splitext(basename)
+    basename = os.path.basename(results.original_wavfile)
+    naked_basename = os.path.splitext(basename)[0]
     json_filename = f"{naked_basename}.json"
     json_filename = os.path.join(folder, json_filename)
     return json_filename
 
 def make_csv_filename(results:InferenceResults, folder = './') -> str:
-    basename = os.path.basename(results.original_filename)
-    naked_basename = os.path.splitext(basename)
+    basename = os.path.basename(results.original_wavfile)
+    naked_basename = os.path.splitext(basename)[0]
     csv_filename = f"{naked_basename}.csv"
     csv_filename = os.path.join(folder, csv_filename)
     return csv_filename
@@ -127,7 +132,7 @@ def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep, json
         os.makedirs(csv_folder)
     
     results = InferenceResults(
-        original_filename = segmentationbookkeep.original_filename,
+        original_wavfile = segmentationbookkeep.original_filename,
         segments = []
     )
 
@@ -135,7 +140,6 @@ def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep, json
         text = transcribe_wavfile(segment.time_segmented_filename)
         inference_result = InferenceResultSegment(
             wavfile = segment.time_segmented_filename,
-            original_wavfile = results.original_filename,
             
             absolute_start_seconds = segment.absolute_start_seconds,
             absolute_start_frames = segment.absolute_start_frames,
@@ -152,8 +156,8 @@ def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep, json
         )
         results.segments.append(inference_result)
 
-    json_filename = make_json_filename(InferenceResults)
-    csv_filename = make_csv_filename(InferenceResults)
+    json_filename = make_json_filename(results, json_folder)
+    csv_filename = make_csv_filename(results, csv_folder)
 
     results_to_json(results, json_filename)
     results_to_csv(results, csv_filename)

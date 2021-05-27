@@ -105,8 +105,8 @@ def results_to_csv(results:list, filename:str):
         mywriter = writer(out, delimiter = '\t')
         mywriter.writerow(["speaker", 'inferred_text', 'duration' , 'absolute_start_seconds', 'absolute_end_seconds', 'segment_wavfile', 'original_wavfile'])
         for result in results.segments:
-            print([result.speaker, result.inferred_text, result.absolute_end_seconds-result.absolute_start_seconds , result.absolute_start_seconds, result.absolute_end_seconds, result.wavfile, result.original_wavfile])
-            mywriter.writerow([result.speaker, result.inferred_text, result.absolute_end_seconds-result.absolute_start_seconds , result.absolute_start_seconds, result.absolute_end_seconds, result.wavfile, result.original_wavfile])
+            print([result.speaker, result.inferred_text, result.absolute_end_seconds-result.absolute_start_seconds , result.absolute_start_seconds, result.absolute_end_seconds, result.wavfile, results.original_wavfile])
+            mywriter.writerow([result.speaker, result.inferred_text, result.absolute_end_seconds-result.absolute_start_seconds , result.absolute_start_seconds, result.absolute_end_seconds, result.wavfile, results.original_wavfile])
 
     print(f"Wrote csv to {filename}")
 
@@ -145,7 +145,7 @@ def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep, json
             absolute_start_frames = segment.absolute_start_frames,
             
             absolute_end_seconds = segment.absolute_end_seconds,
-            absolute_end_frames = segment.absolute_end_seconds,
+            absolute_end_frames = segment.absolute_end_frames,
 
             diarization_turn_i = segment.diarization_turn_i,
             time_segment_i = segment.time_segment_i,

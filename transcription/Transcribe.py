@@ -17,6 +17,9 @@ class InferenceResultSegment():
     absolute_end_seconds:float
     absolute_end_frames:int
 
+    diarization_turn_i:int
+    time_segment_i:int
+
     speaker:str
 
     inferred_text:str
@@ -28,23 +31,23 @@ class InferenceResults():
 
 # https://www.analyticsvidhya.com/blog/2021/02/hugging-face-introduces-the-first-automatic-speech-recognition-model-wav2vec2/
 
-testfile = "/data/voshpde/audiofiles/20140701.wav"
-testfile_resampled = "/data/voshpde/audiofiles/20140701_resampled.wav"
+# testfile = "/data/voshpde/audiofiles/20140701.wav"
+# testfile_resampled = "/data/voshpde/audiofiles/20140701_resampled.wav"
 
 
-# https://unix.stackexchange.com/questions/274144/sox-convert-the-wav-file-with-required-properties-in-single-command 
-os.system(f"sox {testfile} -r 16000 {testfile_resampled}")
+# # https://unix.stackexchange.com/questions/274144/sox-convert-the-wav-file-with-required-properties-in-single-command 
+# os.system(f"sox {testfile} -r 16000 {testfile_resampled}")
 
-#+++++++++
-print('+++++++++load tokenizer+++++++++')
-tokenizer = Wav2Vec2Tokenizer.from_pretrained("facebook/wav2vec2-base-960h")
-print('+++++++++load model+++++++++')
-model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h")
+# #+++++++++
+# print('+++++++++load tokenizer+++++++++')
+# tokenizer = Wav2Vec2Tokenizer.from_pretrained("facebook/wav2vec2-base-960h")
+# print('+++++++++load model+++++++++')
+# model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h")
 
-print('+++++++++save tokenizer+++++++++')
-tokenizer.save_pretrained('/tokenizer/')
-print('+++++++++save model+++++++++')
-model.save_pretrained('/model/')
+# print('+++++++++save tokenizer+++++++++')
+# tokenizer.save_pretrained('/tokenizer/')
+# print('+++++++++save model+++++++++')
+# model.save_pretrained('/model/')
 
 
 
@@ -56,15 +59,12 @@ tokenizer = Wav2Vec2Tokenizer.from_pretrained("facebook/wav2vec2-base-960h")
 model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h")
 
 
-
-
-
-with open("test_transcripts.txt", 'wt') as out:
-    out.write("/data/voshpde/asr_huggingface/transcriptions.txt")
+# with open("test_transcripts.txt", 'wt') as out:
+#     out.write("/data/voshpde/asr_huggingface/transcriptions.txt")
 
 
 def get_text(filename:str):
-    speech, rate = librosa.load(testfile_resampled, sr=16000)
+    speech, rate = librosa.load(filename, sr=16000)
 
     input_values = tokenizer(speech, return_tensors = 'pt').input_values
     #Store logits (non-normalized predictions)
@@ -87,7 +87,7 @@ def transcribe_wavfile(filename:str):
 
     # print(transcriptions)
 
-def results_to_json(results:list, filename:str):
+def results_to_json(results:InferenceResults, filename:str):
     if not filename.endswith(".json"):
         raise ValueError(f"Filename must have the .json extension")
 
@@ -102,19 +102,37 @@ def results_to_csv(results:list, filename:str):
     with open(filename, 'wt') as out:
         mywriter = writer(out, delimiter = '\t')
         mywriter.writerow(["speaker", 'inferred_text', 'duration' , 'absolute_start_seconds', 'absolute_end_seconds', 'segment_wavfile', 'original_wavfile'])
-        for result in results
+        for result in results.segments:
             mywriter.writerow([result.speaker, result.inferred_text, result.absolute_end_seconds-result.absolute_start_seconds , result.absolute_start_seconds, result.absolute_end_seconds, result.wavfile, result.original_wavfile])
 
+def make_json_filename(results:InferenceResults, folder = './') -> str:
+    basename = os.path.basename(results.original_filename)
+    naked_basename = os.path.splitext(basename)
+    json_filename = f"{naked_basename}.json"
+    json_filename = os.path.join(folder, json_filename)
+    return json_filename
+
+def make_csv_filename(results:InferenceResults, folder = './') -> str:
+    basename = os.path.basename(results.original_filename)
+    naked_basename = os.path.splitext(basename)
+    csv_filename = f"{naked_basename}.csv"
+    csv_filename = os.path.join(folder, csv_filename)
+    return csv_filename
 
 
-def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep):
+def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep, json_folder='./json_output', csv_folder='./csv_output'):
+    if not os.path.exists(json_folder):
+        os.makedirs(json_folder)
+    if not os.path.exists(csv_folder):
+        os.makedirs(csv_folder)
+    
     results = InferenceResults(
         original_filename = segmentationbookkeep.original_filename,
         segments = []
     )
 
     for segment in segmentationbookkeep.segments:
-        text = trascibe_wavfile(segment.time_segmented_filename)
+        text = transcribe_wavfile(segment.time_segmented_filename)
         inference_result = InferenceResultSegment(
             wavfile = segment.time_segmented_filename,
             original_wavfile = results.original_filename,
@@ -125,8 +143,17 @@ def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep):
             absolute_end_seconds = segment.absolute_end_seconds,
             absolute_end_frames = segment.absolute_end_seconds,
 
+            diarization_turn_i = segment.diarization_turn_i,
+            time_segment_i = segment.time_segment_i,
+
             speaker = segment.speaker,
             inferred_text = text
 
         )
         results.segments.append(inference_result)
+
+    json_filename = make_json_filename(InferenceResults)
+    csv_filename = make_csv_filename(InferenceResults)
+
+    results_to_json(results, json_filename)
+    results_to_csv(results, csv_filename)

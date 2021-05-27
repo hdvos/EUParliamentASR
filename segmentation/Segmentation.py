@@ -486,6 +486,7 @@ def SegmentTurnsFromBookkeep(bookkeepdata:DiarizationBookkeep, output_root:str, 
         
     # pprint(asdict(time_segment_bookkeep))
     store_segmentation_bookkeep(time_segment_bookkeep, bookkeep_json_file)
+    return time_segment_bookkeep
 
 # #TODO remove main?
 # if __name__ == "__main__":

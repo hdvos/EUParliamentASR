@@ -1,5 +1,6 @@
 from diarization.Diarization import MyDiarizer, DiarizationBookkeep, DiarizationBookkeepSegment
 from segmentation.Segmentation import SegmentTurnsFromBookkeep
+from transcription import Transcribe
 
 from pprint import pprint
 from dataclasses import dataclass, asdict
@@ -59,7 +60,8 @@ def read_diarization_bookkeep(filename:str):
 
 
 def do_segmentation(diarization_bookkeep, output_root:str, bookkeep_json_file:str):
-    SegmentTurnsFromBookkeep(diarization_bookkeep, output_root, bookkeep_json_file)
+    segmentationbookkeep = SegmentTurnsFromBookkeep(diarization_bookkeep, output_root, bookkeep_json_file)
+    return segmentationbookkeep
 
 
 if __name__ == "__main__":
@@ -74,10 +76,15 @@ if __name__ == "__main__":
             diarization_bookkeep=read_diarization_bookkeep(DIARIZATION_BOOKKEEP_FILE)
             print("diarization bookkeep loaded")
     
-        do_segmentation(diarization_bookkeep, SEGMENTATION_OUTPUT_FOLDER, SEGMENTATION_BOOKKEEP_FILE)
+        segmentationbookkeep = do_segmentation(diarization_bookkeep, SEGMENTATION_OUTPUT_FOLDER, SEGMENTATION_BOOKKEEP_FILE)
 
     if STAGE <= 3:  #Transcription
-        ...
+        try: 
+            segmentationbookkeep
+        except NameError:
+            raise NotImplementedError("Implement reader")
+
+        Transcribe.TranscribeFromBookkeep(segmentationbookkeep)
         # TODO Also implement reader for segmentation
 
 

@@ -319,7 +319,7 @@ def segment_sound_wave_from_bookkeep(diarization_segment:DiarizationBookkeepSegm
             # input("wavfile written")
 
             bookkeepsegment = LengthSegmentationBookkeepSegment(
-                time_segmented_filename= 'TODO', 
+                time_segmented_filename= wavfilename_out, 
                 time_segment_i = time_segment_i, 
                 diarization_wavfile= diarization_segment.filename, 
                 diarization_turn_i = diarization_segment.turn_i, 

@@ -63,11 +63,11 @@ def do_segmentation(diarization_bookkeep, output_root:str, bookkeep_json_file:st
 
 
 if __name__ == "__main__":
-    if STAGE == 1:
+    if STAGE == 1:  # Diarization
         testwav = WAVFILE
         diarization_bookeep = do_diarization(testwav)
 
-    if STAGE <= 2:
+    if STAGE <= 2:  # Segmentation
         try: 
             diarization_bookkeep
         except NameError:
@@ -75,4 +75,10 @@ if __name__ == "__main__":
             print("diarization bookkeep loaded")
     
         do_segmentation(diarization_bookkeep, SEGMENTATION_OUTPUT_FOLDER, SEGMENTATION_BOOKKEEP_FILE)
+
+    if STAGE <= 3:  #Transcription
+        ...
+        # TODO Also implement reader for segmentation
+
+
         

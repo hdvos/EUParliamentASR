@@ -292,7 +292,7 @@ def segment_sound_wave_from_bookkeep(diarization_segment:DiarizationBookkeepSegm
             absolute_start_point_frames = toframes(absolute_start_point_seconds, rounding='floor')
 
             if absolute_breakpoint_seconds > diarization_segment.end:
-                raise RuntimeError(f"Absolute breaking point ({absolute_breakpoint}) cannot be larger than end point of diarization segment ({diarization_segment.end})")
+                raise RuntimeError(f"Absolute breaking point ({absolute_breakpoint_seconds}) cannot be larger than end point of diarization segment ({diarization_segment.end})")
             print(diarization_segment)
             print('breakpt', relative_breakpoint_seconds, absolute_breakpoint_seconds)
             print('breakpt', relative_breakpoint_frames, absolute_breakpoint_frames)

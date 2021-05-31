@@ -46,9 +46,10 @@ process_id = os.path.splitext(os.path.basename(args.wavfile))[0]
 STAGE = args.stage   # a parameter that enables skipping a step
 
 SAVE_DIARIZATION_WAVFILES = args.save_diarization_wav
-#DIARIZATION_WAVFILES_LOCATION = 'diarization/test_wav_out'
+# DIARIZATION_WAVFILES_LOCATION = 'diarization/test_wav_out'
 if not os.path.exists(args.diarization_wavfiles_location):
     os.makedirs(args.diarization_wavfiles_location)
+    DIARIZATION_WAVFILES_LOCATION = args.diarization_wavfiles_location
 
 # DIARIZATION_BOOKKEEP_FILE = "test_diarization_bookkeep.json"
 

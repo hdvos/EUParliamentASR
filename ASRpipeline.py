@@ -49,7 +49,9 @@ SAVE_DIARIZATION_WAVFILES = args.save_diarization_wav
 # DIARIZATION_WAVFILES_LOCATION = 'diarization/test_wav_out'
 if not os.path.exists(args.diarization_wavfiles_location):
     os.makedirs(args.diarization_wavfiles_location)
-    DIARIZATION_WAVFILES_LOCATION = args.diarization_wavfiles_location
+
+DIARIZATION_WAVFILES_LOCATION = args.diarization_wavfiles_location
+
 
 # DIARIZATION_BOOKKEEP_FILE = "test_diarization_bookkeep.json"
 
@@ -64,12 +66,14 @@ if not args.diarization_bookkeep_file:
 WAVFILE = args.wavfile
 
 SEGMENTATION_OUTPUT_FOLDER = args.segmentation_output_folder
+
 if not args.segmentation_bookkeep_file:
     if args.stage > 2:
         raise RuntimeError("Must provide a segmentation bookkeepfile if stage is larger than 2")
     if not os.path.exists("segmentation_bookkeep_files"):
         os.makedirs("segmentation_bookkeep_files")
-    diarization_filename = f"{process_id}_segmentation_bookkeep.json"
+    SEGMENTATION_BOOKKEEP_FILE = f"{process_id}_segmentation_bookkeep.json"
+else: 
     SEGMENTATION_BOOKKEEP_FILE = args.segmentation_bookkeep_file
 
 

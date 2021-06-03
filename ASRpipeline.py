@@ -61,8 +61,10 @@ if not args.diarization_bookkeep_file:
     if not os.path.exists("diarization_bookkeep_files"):
         os.makedirs("diarization_bookkeep_files")
     diarization_filename = f"{process_id}_diarization_bookkeep.json"
-    DIARIZATION_BOOKKEEP_FILE = os.path.join("diarization_bookkeep_files", diarization_filename)
 
+    DIARIZATION_BOOKKEEP_FILE = os.path.join("diarization_bookkeep_files", diarization_filename)
+else:
+    DIARIZATION_BOOKKEEP_FILE = os.path.join("diarization_bookkeep_files", args.diarization_bookkeep_file)
 WAVFILE = args.wavfile
 
 SEGMENTATION_OUTPUT_FOLDER = args.segmentation_output_folder
@@ -72,9 +74,9 @@ if not args.segmentation_bookkeep_file:
         raise RuntimeError("Must provide a segmentation bookkeepfile if stage is larger than 2")
     if not os.path.exists("segmentation_bookkeep_files"):
         os.makedirs("segmentation_bookkeep_files")
-    SEGMENTATION_BOOKKEEP_FILE = f"{process_id}_segmentation_bookkeep.json"
+    SEGMENTATION_BOOKKEEP_FILE = os.path.join("segmentation_bookkeep_files", f"{process_id}_segmentation_bookkeep.json")
 else: 
-    SEGMENTATION_BOOKKEEP_FILE = args.segmentation_bookkeep_file
+    SEGMENTATION_BOOKKEEP_FILE = os.path.join("segmentation_bookkeep_files", args.segmentation_bookkeep_file)
 
 
 

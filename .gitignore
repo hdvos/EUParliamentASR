@@ -5,4 +5,4 @@
 *.wav
 *.log
 backsync/
-test_pipeline.slurm
+*.slurm

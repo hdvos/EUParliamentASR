@@ -51,8 +51,8 @@ pip install transformers --user
 
 
 # run
-python ASRpipeline.py /data/voshpde/wav_files/zipfiles/2014090301.wav   &
-python ASRpipeline.py /data/voshpde/wav_files/zipfiles/2015041402.wavv  &
+python ASRpipeline.py /data/voshpde/wav_files/zipfiles/2014090301.wav  &
+python ASRpipeline.py /data/voshpde/wav_files/zipfiles/2015041402.wav  &
 python ASRpipeline.py /data/voshpde/wav_files/zipfiles/2015120101.wav  &
 python ASRpipeline.py /data/voshpde/wav_files/zipfiles/2016061501.wav  &
 wait

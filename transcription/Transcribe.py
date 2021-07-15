@@ -53,10 +53,12 @@ class InferenceResults():
 
 #load any audio file of your choice
 
+MODEL_NAME = "facebook/wav2vec2-base-960h"
+print("THE MODELNAME", MODEL_NAME)
 
 #load model and tokenizer
-tokenizer = Wav2Vec2Tokenizer.from_pretrained("facebook/wav2vec2-base-960h")
-model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h")
+tokenizer = Wav2Vec2Tokenizer.from_pretrained(MODEL_NAME)
+model = Wav2Vec2ForCTC.from_pretrained(MODEL_NAME)
 
 
 # with open("test_transcripts.txt", 'wt') as out:
@@ -128,6 +130,7 @@ def make_csv_filename(results:InferenceResults, folder = './') -> str:
 
 
 def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep, json_folder='./json_output', csv_folder='./csv_output'):
+    print("THE MODELNAME TRANSCRIBE FROM BOOKKEEP", MODEL_NAME)
     if not os.path.exists(json_folder):
         os.makedirs(json_folder)
     if not os.path.exists(csv_folder):

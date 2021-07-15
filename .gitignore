@@ -2,6 +2,7 @@
 /activate_conda.sh
 /testfile.wav
 /testfile2.wav
+timeregistrations/
 *.wav
 *.log
 backsync/

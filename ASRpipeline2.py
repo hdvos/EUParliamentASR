@@ -1,6 +1,6 @@
-from diarization.Diarization import MyDiarizer, DiarizationBookkeep, DiarizationBookkeepSegment
+from diarization.Diarization2 import MyDiarizer #, DiarizationBookkeep, DiarizationBookkeepSegment
 from segmentation.Segmentation import SegmentTurnsFromBookkeep
-from transcription import Transcribe
+# from transcription import Transcribe
 from librosa import get_duration
 from pprint import pprint
 from dataclasses import dataclass, asdict
@@ -41,7 +41,7 @@ args = parser.parse_args()
 process_id = os.path.splitext(os.path.basename(args.wavfile))[0]
 
 SEGMENTATION_OUTPUT_FOLDER = args.segmentation_output_folder
-
+WAVFILE = args.wavfile
 
 
 
@@ -87,10 +87,10 @@ def do_diarization(wavfile_path):
     assert os.path.exists(wavfile_path)
     diarizer = MyDiarizer(wavfile_path)
     diarization_results = diarizer.diarize()
-    diarization_bookeep = diarizer.split_wavfile(DIARIZATION_WAVFILES_LOCATION, DIARIZATION_BOOKKEEP_FILE)
+    # diarization_bookeep = diarizer.split_wavfile(DIARIZATION_WAVFILES_LOCATION, DIARIZATION_BOOKKEEP_FILE)
     pprint(asdict(diarization_results))
-    pprint(asdict(diarization_bookeep))
-    return diarization_bookeep
+    # pprint(asdict(diarization_bookeep))
+    return diarization_results
 
 def read_diarization_bookkeep(filename:str):
     print('read diarization bookkeep')
@@ -117,32 +117,41 @@ def do_segmentation(diarization_bookkeep, output_root:str, bookkeep_json_file:st
 
 
 # TODO: timeregistration dataclass
+@dataclass
+class time_registration:
+    audio_duration:float
+    diarization_duration:float
+    segmentation_duration:float
+    recognition_duration:float
 
 if __name__ == "__main__":
 
     # timereg.write(f"Audiofile is {get_duration(filename = WAVFILE)} seconds.\n")
-    stage_1_start=time.time()
+    diarization_start=time.time()
     testwav = WAVFILE
     diarization_results = do_diarization(testwav)
+    diarization_duration = time.time() - diarization_start
+    
+    print(diarization_results)
     # Diarization results: rttm filename, time took
 
 
-    # timereg.write(f"Stage 1 took {time.time() - stage_1_start:.2f} seconds.\n")
+    # # timereg.write(f"Stage 1 took {time.time() - stage_1_start:.2f} seconds.\n")
 
-    segmentationbookkeep = do_segmentation(diarization_bookkeep, SEGMENTATION_OUTPUT_FOLDER, SEGMENTATION_BOOKKEEP_FILE)
+    # segmentationbookkeep = do_segmentation(diarization_bookkeep, SEGMENTATION_OUTPUT_FOLDER, SEGMENTATION_BOOKKEEP_FILE)
     
-    # timereg.write(f"Stage 2 took {time.time() - stage_2_start:.2f} seconds.\n")
+    # # timereg.write(f"Stage 2 took {time.time() - stage_2_start:.2f} seconds.\n")
 
-    stage_3_start = time.time()
+    # stage_3_start = time.time()
 
-    try: 
-        segmentationbookkeep
-    except NameError:
-        raise NotImplementedError("Implement reader")
-    Transcribe.MODEL_NAME = "facebook/wav2vec2-large-100k-voxpopuli"
-    print(Transcribe.MODEL_NAME)
-    Transcribe.TranscribeFromBookkeep(segmentationbookkeep, 'voxpopuli_transcriptions_json', 'transcriptions_csv', "s")
-    # TODO Also implement reader for segmentation
-    # timereg.write(f"Stage 3 took {time.time() - stage_3_start:.2f} seconds.\n")
+    # try: 
+    #     segmentationbookkeep
+    # except NameError:
+    #     raise NotImplementedError("Implement reader")
+    # Transcribe.MODEL_NAME = "facebook/wav2vec2-large-100k-voxpopuli"
+    # print(Transcribe.MODEL_NAME)
+    # Transcribe.TranscribeFromBookkeep(segmentationbookkeep, 'voxpopuli_transcriptions_json', 'transcriptions_csv', "s")
+    # # TODO Also implement reader for segmentation
+    # # timereg.write(f"Stage 3 took {time.time() - stage_3_start:.2f} seconds.\n")
 
-    # TODO: recombine
+    # # TODO: recombine

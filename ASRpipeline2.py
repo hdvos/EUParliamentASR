@@ -1,5 +1,5 @@
 from diarization.Diarization2 import MyDiarizer #, DiarizationBookkeep, DiarizationBookkeepSegment
-from segmentation.Segmentation import SegmentTurnsFromBookkeep
+from segmentation.audio_segmenter_3 import segment_wavfile
 # from transcription import Transcribe
 from librosa import get_duration
 from pprint import pprint
@@ -138,7 +138,8 @@ if __name__ == "__main__":
 
     # # timereg.write(f"Stage 1 took {time.time() - stage_1_start:.2f} seconds.\n")
 
-    # segmentationbookkeep = do_segmentation(diarization_bookkeep, SEGMENTATION_OUTPUT_FOLDER, SEGMENTATION_BOOKKEEP_FILE)
+    segments_metadata, segmentationbookkeep = segment_wavfile(testwav, SEGMENTATION_OUTPUT_FOLDER)
+    pprint(segmentationbookkeep)
     
     # # timereg.write(f"Stage 2 took {time.time() - stage_2_start:.2f} seconds.\n")
 
@@ -148,8 +149,8 @@ if __name__ == "__main__":
     #     segmentationbookkeep
     # except NameError:
     #     raise NotImplementedError("Implement reader")
-    # Transcribe.MODEL_NAME = "facebook/wav2vec2-large-100k-voxpopuli"
-    # print(Transcribe.MODEL_NAME)
+    Transcribe.MODEL_NAME = args.asr_model
+    print(Transcribe.MODEL_NAME)
     # Transcribe.TranscribeFromBookkeep(segmentationbookkeep, 'voxpopuli_transcriptions_json', 'transcriptions_csv', "s")
     # # TODO Also implement reader for segmentation
     # # timereg.write(f"Stage 3 took {time.time() - stage_3_start:.2f} seconds.\n")

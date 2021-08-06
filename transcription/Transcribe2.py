@@ -18,8 +18,8 @@ class InferenceResultSegment():
     absolute_end_seconds:float
     absolute_end_frames:int
 
-    diarization_turn_i:int
-    time_segment_i:int
+    # diarization_turn_i:int
+    identifier:int
 
     # speaker:str
 
@@ -143,7 +143,7 @@ def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep, json
     )
 
     for segment in segmentationbookkeep:
-        text = transcribe_wavfile(segment.filename)
+        text = transcribe_wavfile(segment["filename"])
         inference_result = InferenceResultSegment(
             wavfile = segment["filename"],
             

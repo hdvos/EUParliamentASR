@@ -1,3 +1,4 @@
+import csv
 import librosa
 import torch
 from transformers import Wav2Vec2ForCTC, Wav2Vec2Tokenizer
@@ -20,7 +21,7 @@ class InferenceResultSegment():
     diarization_turn_i:int
     time_segment_i:int
 
-    speaker:str
+    # speaker:str
 
     inferred_text:str
 
@@ -142,7 +143,7 @@ def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep, json
     )
 
     for segment in segmentationbookkeep.segments:
-        text = transcribe_wavfile(segment.time_segmented_filename)
+        text = transcribe_wavfile(segment.filename)
         inference_result = InferenceResultSegment(
             wavfile = segment.time_segmented_filename,
             
@@ -155,14 +156,15 @@ def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep, json
             diarization_turn_i = segment.diarization_turn_i,
             time_segment_i = segment.time_segment_i,
 
-            speaker = segment.speaker,
+            # speaker = segment.speaker,
             inferred_text = text
 
         )
         results.segments.append(inference_result)
 
     json_filename = make_json_filename(results, json_folder)
+    print(f"Inference json {json_filename}")
     csv_filename = make_csv_filename(results, csv_folder)
-
+    print(f"Inference csv {csv_filename}")
     results_to_json(results, json_filename)
     results_to_csv(results, csv_filename)

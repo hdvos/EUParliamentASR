@@ -1,6 +1,6 @@
 from diarization.Diarization2 import MyDiarizer #, DiarizationBookkeep, DiarizationBookkeepSegment
 from segmentation.audio_segmenter_3 import segment_wavfile
-# from transcription import Transcribe
+from transcription import Transcribe2
 from librosa import get_duration
 from pprint import pprint
 from dataclasses import dataclass, asdict
@@ -149,8 +149,9 @@ if __name__ == "__main__":
     #     segmentationbookkeep
     # except NameError:
     #     raise NotImplementedError("Implement reader")
-    Transcribe.MODEL_NAME = args.asr_model
-    print(Transcribe.MODEL_NAME)
+    Transcribe2.MODEL_NAME = args.asr_model
+    print(Transcribe2.MODEL_NAME)
+    Transcribe2.TranscribeFromBookkeep(segmentationbookkeep, json_folder='json_test', csv_folder='csv_test')
     # Transcribe.TranscribeFromBookkeep(segmentationbookkeep, 'voxpopuli_transcriptions_json', 'transcriptions_csv', "s")
     # # TODO Also implement reader for segmentation
     # # timereg.write(f"Stage 3 took {time.time() - stage_3_start:.2f} seconds.\n")

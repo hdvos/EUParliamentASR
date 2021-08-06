@@ -138,23 +138,23 @@ def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep, json
         os.makedirs(csv_folder)
     
     results = InferenceResults(
-        original_wavfile = segmentationbookkeep.original_filename,
+        original_wavfile = segmentationbookkeep[0]["original_filename"],
         segments = []
     )
 
-    for segment in segmentationbookkeep.segments:
+    for segment in segmentationbookkeep:
         text = transcribe_wavfile(segment.filename)
         inference_result = InferenceResultSegment(
-            wavfile = segment.time_segmented_filename,
+            wavfile = segment["filename"],
             
-            absolute_start_seconds = segment.absolute_start_seconds,
-            absolute_start_frames = segment.absolute_start_frames,
+            absolute_start_seconds = segment["start_seconds"],
+            absolute_start_frames = segment["start_frames"],
             
-            absolute_end_seconds = segment.absolute_end_seconds,
-            absolute_end_frames = segment.absolute_end_frames,
+            absolute_end_seconds = segment["end_seconds"],
+            absolute_end_frames = segment["end_frames"],
 
-            diarization_turn_i = segment.diarization_turn_i,
-            time_segment_i = segment.time_segment_i,
+            # diarization_turn_i = segment.diarization_turn_i,
+            identifier = segment["identifier"],
 
             # speaker = segment.speaker,
             inferred_text = text

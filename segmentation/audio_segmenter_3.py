@@ -187,6 +187,12 @@ def write_wav(segment, fragment_index, folder, filename_base = 'test'):
     os.system( f"rm {filepath}")
     assert os.path.exists(filepath_pcm), "filepath should still exist"
     assert not os.path.exists(filepath), "filepath should be removed"
+    
+    os.system( f"mv {filepath_pcm} {filepath}")
+
+    assert not os.path.exists(filepath_pcm), "filepath should still exist"
+    assert os.path.exists(filepath), "filepath should be removed"
+
     print("-"*30)
 
 #     print(f"--- Converted to pcm. \n--- New filename: {filepath_pcm}")
@@ -403,7 +409,7 @@ def segment_wavfile(wavfilename:str, segments_folder:str ,bookkeep_folder:str = 
             segment_metadata = { "identifier":identifier,
                                  "segment_length": segment_length,
                                  "filename":segment_filename,
-                                 "original_wavfile":wavfilename,
+                                 "original_filename":wavfilename,
                                  "start_seconds": segment.start_seconds,
                                  "end_seconds": segment.end_seconds,
                                  "start_frames": segment.start_frames,

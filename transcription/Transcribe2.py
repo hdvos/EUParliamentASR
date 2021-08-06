@@ -12,11 +12,11 @@ from csv import writer
 class InferenceResultSegment():
     wavfile:str
 
-    absolute_start_seconds:float
-    absolute_start_frames:int
+    start_seconds:float
+    start_frames:int
     
-    absolute_end_seconds:float
-    absolute_end_frames:int
+    end_seconds:float
+    end_frames:int
 
     # diarization_turn_i:int
     identifier:int
@@ -108,10 +108,10 @@ def results_to_csv(results:list, filename:str):
 
     with open(filename, 'wt') as out:
         mywriter = writer(out, delimiter = '\t')
-        mywriter.writerow(["speaker", 'inferred_text', 'duration' , 'absolute_start_seconds', 'absolute_end_seconds', 'segment_wavfile', 'original_wavfile'])
+        mywriter.writerow(['inferred_text', 'duration' , 'start_seconds', 'end_seconds', 'segment_wavfile', 'original_wavfile'])
         for result in results.segments:
-            print([result.speaker, result.inferred_text, result.absolute_end_seconds-result.absolute_start_seconds , result.absolute_start_seconds, result.absolute_end_seconds, result.wavfile, results.original_wavfile])
-            mywriter.writerow([result.speaker, result.inferred_text, result.absolute_end_seconds-result.absolute_start_seconds , result.absolute_start_seconds, result.absolute_end_seconds, result.wavfile, results.original_wavfile])
+            print([result.inferred_text, result.end_seconds-result.start_seconds , result.start_seconds, result.end_seconds, result.wavfile, results.original_wavfile])
+            mywriter.writerow([result.inferred_text, result.end_seconds-result.start_seconds , result.start_seconds, result.end_seconds, result.wavfile, results.original_wavfile])
 
     print(f"Wrote csv to {filename}")
 
@@ -147,11 +147,11 @@ def TranscribeFromBookkeep(segmentationbookkeep:LengthSegmentationBookkeep, json
         inference_result = InferenceResultSegment(
             wavfile = segment["filename"],
             
-            absolute_start_seconds = segment["start_seconds"],
-            absolute_start_frames = segment["start_frames"],
+            start_seconds = segment["start_seconds"],
+            start_frames = segment["start_frames"],
             
-            absolute_end_seconds = segment["end_seconds"],
-            absolute_end_frames = segment["end_frames"],
+            end_seconds = segment["end_seconds"],
+            end_frames = segment["end_frames"],
 
             # diarization_turn_i = segment.diarization_turn_i,
             identifier = segment["identifier"],
